@@ -1,27 +1,32 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Chirps from './views/chirps';
+import Users from './views/users'
+import SingleChirp from './views/SingleChirp';
+import SingleUser from './views/singleUser';
+import Create from './views/Create';
+import EditChirp from './views/EditChirp';
 
 /* HOOK REACT EXAMPLE */
-const App = (props: AppProps) => {
-	const [greeting, setGreeting] = useState<string>('');
-
-	useEffect(() => {
-		async function getGreeting() {
-			try {
-				const res = await fetch('/api/hello');
-				const greeting = await res.json();
-				setGreeting(greeting);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		getGreeting();
-	}, []);
-
+const App = () => {
+	
 	return (
+		<BrowserRouter>
+			<Navbar />
 		<main className="container my-5">
-			<h1 className="text-primary text-center">Hello {greeting}!</h1>
+			<Routes>
+				<Route path='/' element={<h1 className='row justify-content-center'>Welcome to Chirpr, a cheap twitter knock-off!</h1>} />
+				<Route path='/users' element={<Users />} />
+				<Route path='/chirprs' element={<Chirps />} />
+				<Route path='/users/:id' element={<SingleUser />} />
+				<Route path='/chirprs/:id' element={<SingleChirp />} />
+				<Route path='/create' element={<Create />} />
+				<Route path='/chirprs/:id/edit'element={<EditChirp />} />
+				
+			</Routes>
 		</main>
+		</BrowserRouter>
 	);
 };
 
