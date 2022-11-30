@@ -16,22 +16,13 @@ export const connection = mysql.createConnection({
 //     if(err) console.log(err);
 // });
 
-export interface Post {
-    id: number;
-    userid: number;
-    content: string;
-    location: string
-}
 
-export interface NewPost {
-    content: string;
-    location: string;
-}
 
-export const Query=(query: string , values?: Array<string | number>) => {
+
+export const Query=<T=mysql.OkPacket>(query: string , values?: Array<unknown>) => {
     const formattedSQL = mysql.format(query, values || []);
 
-    return new Promise<Array<any>> ((resolve, reject) => {
+    return new Promise<T> ((resolve, reject) => {
         connection.query(formattedSQL, (err,results) => {
             if (err) return reject(err);
             return resolve(results);

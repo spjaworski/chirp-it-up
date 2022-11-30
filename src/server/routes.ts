@@ -61,7 +61,7 @@ router.delete('/api/chirprs/:id', async (req, res) => {
     }
 });
 
-router.put('/api/chirprs/:id', async (req, res) => {
+router.put('/api/chirprs/:id/edit', async (req, res) => {
     try {
         console.log('chirpr connected, put request')
         console.log(req);
@@ -74,10 +74,16 @@ router.put('/api/chirprs/:id', async (req, res) => {
 
 router.post('/api/chirprs', async (req, res) => {
     try { 
+        const { name, content } = req.body;
+        if ( !name || !content ) {
+            res.status(400).json({message: "Bad Data Input, missing Name or Content"})
+            return;
+        }
+    
         console.log('chirps connected');
         console.log(req);
         console.log(res);
-        res.json((await db.chirprs.addChirp(req.body.content)))
+        res.json((await db.chirprs.addChirp({name, content})))
     } catch(e) { 
         console.log(e);
         res.sendStatus(500);
